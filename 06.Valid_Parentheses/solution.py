@@ -1,26 +1,15 @@
 class Solution:
     def isValid(self, s: str) -> bool:
-        hmap = { bk: 0 for bk in '()[]{}'}
-
-        n = len(s)
-        for i in range(n):  # O(n)
-            if s[i] in ['(', '[', '{']:   # O(1)
-                hmap[s[i]] += 1
-            
-            if s[i] == ')':               # O(1)
-                hmap[')'] += 1
-                if hmap['('] < hmap[')']: # O(1)
-                    return False
-            if s[i] == ']':               # O(1)
-                hmap[']'] += 1
-                if hmap['['] < hmap[']']: # O(1)
-                    return False
-            if s[i] == '}':               # O(1)
-                hmap['}'] += 1
-                if hmap['{'] < hmap['}']: # O(1)
-                    return False
+        stack = []
+        bk_map = {")": "(", "]": "[" , "}": "{"}
         
-        if (hmap['('] == hmap[')']) and (hmap['['] == hmap[']']) and (hmap['{'] == hmap['}']):  # O(1)
-            return True
-        else:
-            return False
+        for bk in s:
+            if bk in bk_map.keys():
+                top = stack.pop() if stack else 'hoge'
+                
+                if top != bk_map[bk]:
+                    return False
+            else:
+                stack.append(bk)
+        
+        return not stack
